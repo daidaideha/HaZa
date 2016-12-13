@@ -1,0 +1,117 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
+    defaultConfig {
+        applicationId "com.lyl.haza"
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 2
+        versionName "1.0.0"
+        vectorDrawables.useSupportLibrary = true
+        resConfigs "zh"
+    }
+
+    signingConfigs {
+        debug {
+        }
+        release {
+            // keystore
+            storeFile file('MrProLin.keystore')
+            // keys
+            Properties properties = loadProperties('app/ant.properties')
+
+            storePassword properties.get('key.store.password')
+            keyAlias properties.get('key.alias')
+            keyPassword properties.get('key.alias.password')
+            // google 新版签名跟打渠道包有冲突
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://v.juhe.cn/\""
+        }
+        release {
+            buildConfigField "String", "BASE_URL", "\"http://v.juhe.cn/\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    dexOptions {
+        preDexLibraries true
+        javaMaxHeapSize "4g"
+    }
+}
+
+ext {
+    supportLibVersion = '24.2.1'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // google support
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:cardview-v7:${supportLibVersion}"
+    // ok http
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    // gson
+    compile 'com.google.code.gson:gson:2.7'
+    // 图片加载
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+    // retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    // RxJava
+    compile 'io.reactivex:rxjava:1.1.9'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    // apt command comes from the android-apt plugin
+    apt "com.google.guava:guava:19.0"
+    apt 'com.google.dagger:dagger-compiler:2.4'
+    compile 'com.google.dagger:dagger:2.4'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+}
+
+Properties loadProperties(String name) {
+    Properties properties = new Properties()
+
+    InputStream is = null;
+    try {
+        is = new FileInputStream(name)
+        properties.load(is)
+    } catch (Throwable tr) {
+        tr.printStackTrace()
+    } finally {
+        if (is != null) {
+            try {
+                is.close()
+            } catch (Throwable tr) {
+                tr.printStackTrace()
+            }
+        }
+    }
+
+    return properties
+}

@@ -1,0 +1,34 @@
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base">
+    </style>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Actionbar color -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--Status bar color-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--Window color-->
+        <item name="android:windowBackground">@color/window_background</item>
+        <!-- Toolbar Theme / Apply white arrow -->
+        <item name="colorControlNormal">@color/white</item>
+        <!--Navigation icon颜色设置-->
+        <item name="drawerArrowStyle">@style/AppTheme.MyDrawerArrowStyle</item>
+    </style>
+
+    <!--加入一個新的 navigation drarwer 的風格-->
+    <style name="AppTheme.MyDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <!--將 spinBars 屬性設定為 false-->
+        <item name="spinBars">false</item>
+        <!--設定 drawer arrow 的顏色-->
+        <item name="color">@color/white</item>
+    </style>
+
+</resources>
